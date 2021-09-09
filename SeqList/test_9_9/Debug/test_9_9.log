@@ -1,0 +1,4 @@
+﻿  SeqList.c
+f:\project\c\github\test_school\test_9_9\test_9_9\seqlist.c(39): warning C4018: “<”: 有符号/无符号不匹配
+f:\project\c\github\test_school\test_9_9\test_9_9\seqlist.c(74): warning C4018: “<”: 有符号/无符号不匹配
+  test_9_9.vcxproj -> F:\project\c\GitHub\test_School\test_9_9\Debug\SeqList.exe
