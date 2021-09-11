@@ -95,10 +95,13 @@ int SeqListFind(SeqList* ps, SLDateType x)
 		if (ps->a[i] == x)
 			return i + 1;
 	}
+
+	return -1;
 }
 void SeqListInsert(SeqList* ps, size_t pos, SLDateType x)
 {
 	assert(ps);
+	assert(pos > 0);
 
 	SQLCheckCapacity(ps);
 	ps->size++;
@@ -113,7 +116,7 @@ void SeqListInsert(SeqList* ps, size_t pos, SLDateType x)
 void SeqListErase(SeqList* ps, size_t pos)
 {
 	assert(ps);
-
+	assert(pos > 0);
 
 	for (int i = pos - 1; i < ps->size - 1; i++)
 	{
