@@ -14,4 +14,7 @@ typedef struct LinkListNode
 ListNode* Develop_Node(LSTDataType input);
 void ListPushFront(ListNode** PPHead, LSTDataType input);
 void ListPushBack(ListNode** PPHead, LSTDataType input);
+void ListPopFront(ListNode** PPHead);
+void ListPopBack(ListNode** PPHead);
+void ListPrint(ListNode* PHead);
 
