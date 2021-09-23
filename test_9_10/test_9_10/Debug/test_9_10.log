@@ -1,1 +1,3 @@
-﻿  test_9_10.vcxproj -> F:\project\c\GitHub\test_School\test_9_10\Debug\test_9_10.exe
+﻿  test.c
+f:\project\c\github\test_school\test_9_10\test_9_10\test.c(15): warning C4018: “<”: 有符号/无符号不匹配
+f:\project\c\github\test_school\test_9_10\test_9_10\test.c(35): warning C4018: “<”: 有符号/无符号不匹配
