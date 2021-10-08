@@ -5,6 +5,7 @@
 SListNode* BuySListNode(SLTDateType x)
 {
 	SListNode* new = (SListNode*)malloc(sizeof(SListNode));
+	//断言判断申请空间是否成功
 	assert(new != NULL);
 	
 	new->data = x;
@@ -17,6 +18,7 @@ void SListPrint(SListNode* plist)
 {
 	if (plist == NULL)
 	{
+		printf("NULL");
 		return;
 	}
 
@@ -31,6 +33,7 @@ void SListPrint(SListNode* plist)
 
 void SListPushBack(SListNode** pplist, SLTDateType x)
 {
+	//检查参数
 	assert(pplist);
 
 	SListNode* next = BuySListNode(x);
@@ -60,8 +63,8 @@ void SListPushFront(SListNode** pplist, SLTDateType x)
 	}
 	else
 	{
-		new->next = (*pplist)->next;
-		(*pplist)->next = new;
+		new->next = *pplist;
+		*pplist = new;
 	}
 
 }
@@ -92,7 +95,9 @@ void SListPopBack(SListNode** pplist)
 
 void SListPopFront(SListNode** pplist)
 {
+	//检查参数
 	assert(pplist);
+	//检查链表是否为空
 	assert(*pplist);
 
 	if ((*pplist)->next == NULL)
@@ -141,20 +146,24 @@ void SListInsertAfter(SListNode* pos, SLTDateType x)
 	
 }
 
-void SListEraseAfter(SListNode* pos)
+void SListDestory(SListNode** plist)
 {
-	assert(pos);
-	
-	SListNode* next = pos->next;
-	while (next != NULL)
+	assert(plist);
+
+	if (*plist == NULL)
+		return;
+
+	SListNode* cur = *plist;
+	SListNode* next = (*plist)->next;
+	while (cur->next != NULL)
 	{
-		pos->next = next->next;
-		free(next);
-		next = NULL;
+		free(cur);
+		cur = next;
+		next = next->next;
 	}
-}
+	free(cur);
 
-void SListDestory(SListNode* plist)
-{
+	*plist = NULL;
 
+	return ;
 }
