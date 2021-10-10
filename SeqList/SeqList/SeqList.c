@@ -63,8 +63,8 @@ void SListPushFront(SListNode** pplist, SLTDateType x)
 	}
 	else
 	{
-		new->next = *pplist;
-		*pplist = new;
+		new->next = (*pplist)->next;
+		(*pplist)->next = new;
 	}
 
 }
@@ -108,9 +108,9 @@ void SListPopFront(SListNode** pplist)
 
 	else
 	{
-		SListNode* next = (*pplist)->next;
-		free(*pplist);
-		*pplist = next;
+		SListNode* nnext = (*pplist)->next->next;
+		free((*pplist)->next);
+		(*pplist)->next = nnext;
 	}
 }
 
