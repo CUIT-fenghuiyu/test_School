@@ -28,7 +28,7 @@ int main(void)
 		printf("output:\n初始化顺序表失败\n");
 		return 0;
 	}
-	
+
 	printf("输入需要插入到顺序表的元素个数:");
 	scanf("%d", &n);
 	//生成顺序表的元素
@@ -139,17 +139,7 @@ int prime(int n)
 }
 
 /******start******/
-int FindList(pSeqList L, int pos, int *value)
-{
-	if (L == NULL || pos > L->length || pos < 0)
-	{
-		printf("位置不合法!\n");
-		return -1;
-	}
 
-	*value = L->elem[pos - 1];
+printf("位置不合法!\n");
 
-	return 1;
-
-}
 /******end******/
