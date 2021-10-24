@@ -1,73 +1,141 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<malloc.h>
+#include"Heap.h"
 
 void Swap(int* a, int* b)
 {
+	assert(a && b);
+
 	int tmp = *a;
 	*a = *b;
 	*b = tmp;
 }
 
-void AdJustDown(int* arr, int n, int parent)
+void AdJustDown(int* a, int n, int parent)
 {
+	assert(a);
+	
 	int	child = parent * 2 + 1;
 	while (child < n)
 	{
-		if (child + 1 < n && arr[child] > arr[child + 1])
+		if (child + 1 < n && a[child] > a[child + 1])
 		{
 			child++;
 		}	
-		if (arr[child] < arr[parent])
+		if (a[child] < a[parent])
 		{
-			Swap(&arr[child], &arr[parent]);
+			Swap(&a[child], &a[parent]);
+			parent = child;
+			child = child * 2 + 1;
 		}
-		parent = child;
-		child = child * 2 + 1;
+		else {
+			break;
+		}
 	}
 
 }
 
-void CreateHeap(int* arr, int n)
+void AdJustup(int* a,int child)
 {
+	assert(a);
+	int parent = (child - 1) / 2;
+
+	while (child > 0)
+	{
+		if (a[child] < a[parent])
+		{
+			Swap(&a[child], &a[parent]);
+			child = parent;
+			parent = child - 1 / 2;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+
+void CreateHeap(HP* hp, int n)
+{
+	assert(hp);
 	int i = 0;
 	for (i = ((n - 1) - 1 ) / 2; i >= 0; i--)
 	{
-		AdJustDown(arr, n, i);
+		AdJustDown(hp->a, n, i);
 	}
 }
 
-void HeapSort(int* arr, int n)
+void HeapInit(HP* hp, int* a, int n)
 {
+	assert(hp);
+
+	hp->a = (HPDataType*)malloc(sizeof(HPDataType) * n);
+	memset(hp->a, a, sizeof(a));
+	hp->size = n;
+	hp->capacity = n;
+	CreateHeap(hp->a, n);
+}
+
+void HeapSort(HP* hp, int n)
+{
+	assert(hp);
+
 	int i = n - 1;
 
 	while (i>0)
 	{
-		Swap(&arr[0], &arr[i]);
+		Swap(&hp->a[0], &hp->a[i]);
 		i--;
-		AdJustDown(arr, i, 0);
+		AdJustDown(hp->a, i, 0);
 	}
 }
 
-int main()
+void PrintHeap(HP* hp, int n)
 {
-	int arr[] = { 14,23,41,32,1,2,42,33,92,10 };
+	assert(hp);
 
-	CreateHeap(arr, sizeof(arr) / sizeof(arr[0]));
-	
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < hp->size; i++)
 	{
-		printf("%d ", arr[i]);
+		printf("%d ", hp->a[i]);
 	}
 	printf("\n");
+}
 
-	HeapSort(arr, sizeof(arr) / sizeof(arr[0]));
-
-	for (int i = 0; i < 10; i++)
+void HeapPush(HP* hp, HPDataType x)
+{
+	assert(hp);
+	if (hp->size == hp->capacity)
 	{
-		printf("%d ", arr[i]);
+		int newcapacity = (hp->capacity)* 2;
+		hp->a = (HPDataType*)realloc(hp->a, newcapacity*sizeof(HPDataType));
+		hp->capacity = newcapacity;
 	}
-	return 0;
+	hp->a[hp->size] = x;
+	hp->size++;
+	AdJustup(hp->a, hp->size, hp->size - 1);
+}
+
+void HeapPop(HP* hp)
+{
+	assert(hp);
+	assert(!(HeapEmpety(hp)));
+	Swap(&hp->a[0], &hp->a[hp->size]);
+	hp->size--;
+	AdJustDown(hp, sizeof(hp->a) / sizeof(HPDataType), 0);
+}
+
+HPDataType HeapTop(HP* hp)
+{
+	assert(hp);
+	assert(!(HeapEmpety(hp)));
+
+	return hp->a[0];
+}
+
+bool HeapEmpety(HP* hp)
+{
+	assert(hp);
+
+	return hp->size == 0;
 }
