@@ -11,6 +11,7 @@ void Swap(int* a, int* b)
 	*b = tmp;
 }
 
+// 条件：左右子树都是小堆/大堆
 void AdJustDown(int* a, int n, int parent)
 {
 	assert(a);
@@ -18,11 +19,11 @@ void AdJustDown(int* a, int n, int parent)
 	int	child = parent * 2 + 1;
 	while (child < n)
 	{
-		if (child + 1 < n && a[child] > a[child + 1])
+		if (child + 1 < n && a[child] < a[child + 1])
 		{
 			child++;
 		}	
-		if (a[child] < a[parent])
+		if (a[child] > a[parent])
 		{
 			Swap(&a[child], &a[parent]);
 			parent = child;
@@ -42,11 +43,11 @@ void AdJustup(int* a,int child)
 
 	while (child > 0)
 	{
-		if (a[child] < a[parent])
+		if (a[child] > a[parent])
 		{
 			Swap(&a[child], &a[parent]);
 			child = parent;
-			parent = child - 1 / 2;
+			parent = (child - 1 )/ 2;
 		}
 		else
 		{
@@ -56,86 +57,112 @@ void AdJustup(int* a,int child)
 }
 
 
-void CreateHeap(HP* hp, int n)
+void CreateHeap(HP* php, int n)
 {
-	assert(hp);
+	assert(php);
 	int i = 0;
 	for (i = ((n - 1) - 1 ) / 2; i >= 0; i--)
 	{
-		AdJustDown(hp->a, n, i);
+		AdJustDown(php->a, n, i);
 	}
 }
 
-void HeapInit(HP* hp, int* a, int n)
+void HeapInit(HP* php, int* arr, int n)
 {
-	assert(hp);
+	assert(php);
 
-	hp->a = (HPDataType*)malloc(sizeof(HPDataType) * n);
-	memset(hp->a, a, sizeof(a));
-	hp->size = n;
-	hp->capacity = n;
-	CreateHeap(hp->a, n);
+	php->a = (HPDataType*)malloc(sizeof(HPDataType) * n);
+	memcpy(php->a, arr, sizeof(HPDataType) * n);
+	php->size = n;
+	php->capacity = n;
+	CreateHeap(php, n);
 }
 
-void HeapSort(HP* hp, int n)
+void HeapSort(HP* php, int n)
 {
-	assert(hp);
+	assert(php);
 
 	int i = n - 1;
 
 	while (i>0)
 	{
-		Swap(&hp->a[0], &hp->a[i]);
+		Swap(&php->a[0], &php->a[i]);
 		i--;
-		AdJustDown(hp->a, i, 0);
+		AdJustDown(php->a, i, 0);
 	}
 }
 
-void PrintHeap(HP* hp, int n)
+void PrintHeap(HP* php)
 {
-	assert(hp);
+	assert(php);
+	assert(!HeapEmpety(php));
 
-	for (int i = 0; i < hp->size; i++)
+	for (int i = 0; i < php->size; i++)
 	{
-		printf("%d ", hp->a[i]);
+		printf("%d ", php->a[i]);
 	}
 	printf("\n");
 }
 
-void HeapPush(HP* hp, HPDataType x)
+void HeapPush(HP* php, HPDataType x)
 {
-	assert(hp);
-	if (hp->size == hp->capacity)
+	assert(php);
+	if (php->size == php->capacity)
 	{
-		int newcapacity = (hp->capacity)* 2;
-		hp->a = (HPDataType*)realloc(hp->a, newcapacity*sizeof(HPDataType));
-		hp->capacity = newcapacity;
+		int newcapacity = (php->capacity)* 2;
+		php->a = (HPDataType*)realloc(php->a, newcapacity*sizeof(HPDataType));
+		php->capacity = newcapacity;
 	}
-	hp->a[hp->size] = x;
-	hp->size++;
-	AdJustup(hp->a, hp->size, hp->size - 1);
+	php->a[php->size] = x;
+	php->size++;
+	AdJustup(php->a, php->size - 1);
 }
 
-void HeapPop(HP* hp)
+void HeapPop(HP* php)
 {
-	assert(hp);
-	assert(!(HeapEmpety(hp)));
-	Swap(&hp->a[0], &hp->a[hp->size]);
-	hp->size--;
-	AdJustDown(hp, sizeof(hp->a) / sizeof(HPDataType), 0);
+	assert(php);
+	assert(!(HeapEmpety(php)));
+	Swap(&php->a[0], &php->a[php->size - 1]);
+	php->size--;
+	AdJustDown(php->a, php->size, 0);
 }
 
-HPDataType HeapTop(HP* hp)
+HPDataType HeapTop(HP* php)
 {
-	assert(hp);
-	assert(!(HeapEmpety(hp)));
+	assert(php);
+	assert(!(HeapEmpety(php)));
 
-	return hp->a[0];
+	return php->a[0];
 }
 
-bool HeapEmpety(HP* hp)
+bool HeapEmpety(HP* php)
 {
-	assert(hp);
+	assert(php);
 
-	return hp->size == 0;
+	return php->size == 0;
+}
+
+void HeapDestroy(HP* php)
+{
+	assert(php);
+	assert(!HeapEmpety(php));
+
+	free(php->a);
+	php->a = NULL;
+	php->size = 0;
+}
+
+int HeapSize(HP* php)
+{
+	return php->size;
+}
+
+void TopK(HP* php, int n)
+{
+	while (n--)
+	{
+		printf("%d ", HeapTop(php));
+		HeapPop(php);
+	}
+	printf("\n");
 }
