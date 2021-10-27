@@ -9,7 +9,7 @@ int main()
 	HP hp;
 	HeapInit(&hp, arr, sizeof(arr) / sizeof(int));
 	PrintHeap(&hp);
-	TopK(&hp, 3);
+	//TopK(&hp, 3);
 	/*HeapPop(&hp);
 	PrintHeap(&hp);
 	HeapPush(&hp, 99);
