@@ -104,7 +104,22 @@ int BinaryTreeLevelKSize(BTNode* root, int k)
 {
 	if (root == NULL)
 		return 0;
-	if()
+	if (k == 1)
+	{
+		return 1;
+	}
+	return BinaryTreeLevelKSize(root, k - 1) + BinaryTreeLevelKSize(root, k - 1);
+}
+
+int BinaryTreeDepth(BTNode* root)
+{
+	if (root == NULL)
+		return 0;
+	
+	int LeftDepth = BinaryTreeDepth(root->left);
+	int RightDepth = BinaryTreeDepth(root->right);
+
+	return LeftDepth > RightDepth ? LeftDepth + 1 : RightDepth + 1;
 }
 
 int main()
@@ -117,6 +132,8 @@ int main()
 	PostOrder(root);
 	printf("\n");
 	printf("%d",BinaryTreeLeafSize(root));
+	printf("\n");
+	printf("%d", BinaryTreeDepth(root));
 
 	return 0;
 }
