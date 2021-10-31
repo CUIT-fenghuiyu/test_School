@@ -58,6 +58,62 @@ struct TreeNode* invertTree(struct TreeNode* root) {
 	return root;
 }
 
-bool isSymmetric(struct TreeNode* root) {
+bool _isSymmetric(struct TreeNode* left, struct TreeNode* right)
+{
+	if (left == NULL && right == NULL)
+		return true;
+	if (left == NULL || right == NULL)
+		return false;
+	return left->val == right->val &&
+		_isSymmetric(left->left, right->right) &&
+		_isSymmetric(left->right, right->left);
+}
 
+bool isSymmetric(struct TreeNode* root) {
+	if (root == NULL)
+		return true;
+	return _isSymmetric(root->left, root->right);
+}
+
+bool isSameTree(struct TreeNode* p, struct TreeNode* q) {
+	if (p == NULL && q == NULL)
+		return true;
+	if (p == NULL || q == NULL)
+		return false;
+	if (p->val != q->val)
+		return false;
+	
+	return isSameTree(p->left, q->left) &&
+		isSameTree(p->right, q->right);
+}
+
+void TreeSize(struct TreeNode* root, int* size)
+{
+	if (root == NULL)
+		return;
+	size++;
+	TreeSize(root->left,size);
+	TreeSize(root->right,size);
+	return;
+}
+
+void _preorderTraversal(struct TreeNode* root, int* arr, int* i)
+{
+	if (root == NULL)
+		return;
+	arr[*i++] = root->val;
+	_preorderTraversal(root->left, arr, i);
+	_preorderTraversal(root->left, arr, i);
+
+	return;
+}
+
+int* preorderTraversal(struct TreeNode* root, int* returnSize) {
+	int size = 0;
+	TreeSize(root, &size);
+	*returnSize = size;
+	int *arr = (int*)malloc(sizeof(int) * size);
+	int i = 0;
+	_preorderTraversal(root, arr, &i);
+	return arr;
 }
