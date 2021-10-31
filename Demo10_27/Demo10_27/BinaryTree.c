@@ -122,6 +122,33 @@ int BinaryTreeDepth(BTNode* root)
 	return LeftDepth > RightDepth ? LeftDepth + 1 : RightDepth + 1;
 }
 
+BTNode* BinaryTreFind(BTNode* root, BTDataType x)
+{
+	if (root == NULL)
+	{
+		return NULL;
+	}
+
+	if (root->data == x)
+	{
+		printf("Find it\n");
+		return root;
+	}
+
+	BTNode* retleft = BinaryTreFind(root->left, x);
+	if (retleft)
+	{
+		return retleft;
+	}
+	BTNode* retright = BinaryTreFind(root->right, x);
+	if (retright)
+	{
+		return retright;
+	}
+	return NULL;
+
+}
+
 int main()
 {
 	BTNode* root = CreatBinaryTree();
@@ -134,6 +161,8 @@ int main()
 	printf("%d",BinaryTreeLeafSize(root));
 	printf("\n");
 	printf("%d", BinaryTreeDepth(root));
-
+	printf("\n");
+	BTNode* ret = BinaryTreFind(root, 'F');
+	printf("%c",ret->data);
 	return 0;
 }
