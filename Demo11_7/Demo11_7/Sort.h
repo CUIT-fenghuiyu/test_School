@@ -16,3 +16,4 @@ void SelectSort(int* a, int n);
 // ∂—≈≈–Ú
 void AdjustDwon(int* a, int n, int root);
 void HeapSort(int* a, int n);
+void BubbleSort(int*arr, int n);

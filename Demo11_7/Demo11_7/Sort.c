@@ -18,6 +18,7 @@ void Swap(int* p, int*q)
 	*q = tmp;
 }
 
+//²åÈëÅÅÐò
 void InsertSort(int* a, int n)
 {
 	int end;
@@ -42,6 +43,7 @@ void InsertSort(int* a, int n)
 	}
 }
 
+//shellÅÅÐò 
 void ShellSort(int* a, int n)
 {
 	int end;
@@ -72,6 +74,7 @@ void ShellSort(int* a, int n)
 	}
 }
 
+//Ñ¡ÔñÅÅÐò
 void SelectSort(int* a, int n)
 {
 	int begin = 0;
@@ -104,6 +107,7 @@ void SelectSort(int* a, int n)
 	}
 }
 
+//¶ÑÅÅÐòÏòÏÂµ÷Õû
 void AdjustDwon(int* a, int n, int root)
 {
 	
@@ -129,6 +133,7 @@ void AdjustDwon(int* a, int n, int root)
 	
 }
 
+//¶ÑÅÅÐò
 void HeapSort(int* a, int n)
 {
 	for (int i = (n - 1 - 1) / 2; i >= 0; i--)
@@ -142,5 +147,40 @@ void HeapSort(int* a, int n)
 		Swap(&a[0], &a[end]);
 		AdjustDwon(a, end, 0);
 		end--;
+	}
+}
+
+void BubbleSort(int*arr, int n)
+{
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n - i - 1; j++)
+		{
+			if (arr[j] >= arr[j + 1])
+			{
+				Swap(&arr[j], &arr[j + 1]);
+			}
+		}
+	}
+}
+
+void BubbleSort2(int* a, int n)
+{
+	for (int end = n; end > 0; --end)
+	{
+		int exchange = 0;
+		for (int i = 1; i < end; ++i)
+		{
+			if (a[i - 1] > a[i])
+			{
+				Swap(&a[i - 1], &a[i]);
+				exchange = 1;
+			}
+		}
+
+		if (exchange == 0)
+		{
+			break;
+		}
 	}
 }
