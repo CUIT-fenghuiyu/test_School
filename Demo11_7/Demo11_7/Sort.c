@@ -1,5 +1,7 @@
 #pragma once
 #include<stdio.h>
+#include"Sort.h"
+#include"Stack.h"
 
 void PrintArrary(int* a, int n)
 {
@@ -183,4 +185,230 @@ void BubbleSort2(int* a, int n)
 			break;
 		}
 	}
+}
+
+
+void PrintArr(int*arr, int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+
+	return;
+}
+
+
+int GetMidIndex(int* arr, int left, int right)
+{
+	int mid = (left + right) / 2;
+	if (arr[left] > arr[mid])
+	{
+		if (arr[mid] > arr[right])
+		{
+			return mid;
+		}
+		else if (arr[right] > arr[left])
+		{
+			return left;
+		}
+		else
+			return right;
+	}
+	else
+	{
+		if (arr[left] > arr[right])
+		{
+			return left;
+		}
+		else if (arr[right] > arr[mid])
+		{
+			return mid;
+		}
+		else
+			return right;
+	}
+}
+
+//hoare法
+int PartSort1(int* arr, int left, int right)
+{
+	int midi = GetMidIndex(arr, left, right);
+	Swap(&arr[left], &arr[midi]);
+
+	int keyi = left;
+
+	while (left < right)
+	{
+		while (left < right && arr[right] > arr[keyi])
+		{
+			--right;
+		}
+		while (left < right && arr[left] <= arr[keyi])
+		{
+			++left;
+		}
+
+		Swap(&arr[left], &arr[right]);
+	}
+	Swap(&arr[keyi], &arr[right]);
+
+	return right;
+}
+
+
+//挖坑法
+int PartSort2(int* arr, int left, int right)
+{
+	int midi = GetMidIndex(arr, left, right);
+	Swap(&arr[left], &arr[midi]);
+
+	int hole = left;
+	int key = arr[left];
+	while (left < right)
+	{
+		while (left < right && arr[right] > key)
+		{
+			right--;
+		}
+		arr[hole] = arr[right];
+		hole = right;
+		while (left < right && arr[left] <= key)
+		{
+			left++;
+		}
+		arr[hole] = arr[left];
+		hole = left;
+	}
+	arr[hole] = key;
+
+	return hole;
+}
+
+//前后指针法
+int PartSort3(int* arr, int left, int right)
+{
+	int midi = GetMidIndex(arr, left, right);
+	Swap(&arr[left], &arr[midi]);
+
+	int prev = left;//后指针
+	int cur = left + 1;//前指针
+	int keyi = left;//关键位置
+	while (cur <= right)
+	{
+		//后指针遍历数组,当cur的值比key值小并且prev+1之后就在cur的位置,则不进行交换
+		if (arr[cur] < arr[keyi] && ++prev != cur)
+		{
+			Swap(&arr[prev], &arr[cur]);
+		}
+		cur++;
+	}
+	Swap(&arr[prev], &arr[keyi]);
+	keyi = prev;
+
+	return keyi;
+}
+
+//快速排序递归法
+void QuickSort(int* arr, int left, int right)
+{
+	if (left >= right)
+	{
+		return;
+	}
+
+	int keyi = PartSort2(arr, left, right);
+
+	QuickSort(arr, left, keyi - 1);
+	QuickSort(arr, keyi + 1, right);
+
+	return;
+}
+
+//快速排序非递归法
+void QuickSortNonR(int* arr, int left, int right)
+{
+	Stack st;
+	StackInit(&st);
+	StackPush(&st, right);
+	StackPush(&st, left);
+
+	while (!StackEmpty(&st))
+	{
+		int begin = StackTop(&st);
+		StackPop(&st);
+		int end = StackTop(&st);
+		StackPop(&st);
+
+		int keyi = PartSort3(arr, begin, end);
+		
+		if (keyi + 1 < end)
+		{
+			StackPush(&st, end);
+			StackPush(&st, keyi + 1);
+		}
+
+		if (keyi - 1 > begin)
+		{
+			StackPush(&st, keyi - 1);
+			StackPush(&st, begin);
+		}
+	}
+	StackDestroy(&st);
+}
+
+
+void _MergeSort(int* arr, int left, int right, int* tmp)
+{
+	if (left >= right)
+		return;
+
+	int mid = (left + right) / 2;
+	
+	//将数组分解为1个1个的
+	_MergeSort(arr,left, mid,tmp);
+	_MergeSort(arr,mid + 1, right,tmp);
+
+	int begin1 = left, end1 = mid;
+	int begin2 = mid + 1, end2 = right;
+	int index = left;
+
+	while (begin1 <= end1 && begin2 <= end2)
+	{
+		if (arr[begin1] < arr[begin2])
+		{
+			tmp[index++] = arr[begin1];
+			begin1++;
+		}
+
+		else 
+		{
+			tmp[index++] = arr[begin2];
+			begin2++;
+		}
+	}
+
+	while (begin1 <= end1)
+	{
+		tmp[index++] = arr[begin1++];
+	}
+
+	while (begin2 <= end2)
+	{
+		tmp[index++] = arr[begin2++];
+	}
+
+	for (int i = left; i <= right; i++)
+	{
+		arr[i] = tmp[i];
+	}
+}
+
+//归并排序
+void MergeSort(int* arr,int n)
+{
+	int * tmp = (int*)malloc(sizeof(int) * n);
+	_MergeSort(arr, 0, n - 1, tmp);
+	free(tmp);
 }

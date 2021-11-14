@@ -16,4 +16,11 @@ void SelectSort(int* a, int n);
 // ╤яеепР
 void AdjustDwon(int* a, int n, int root);
 void HeapSort(int* a, int n);
+//ц╟ещеепР
 void BubbleSort(int*arr, int n);
+//©ЛкыеепР-╣щ╧И
+void QuickSort(int* arr, int left, int right);
+//©ЛкыеепР-╥г╣щ╧И
+void QuickSortNonR(int* arr, int left, int right);
+//╧И╡╒еепР-╣щ╧И
+void MergeSort(int* arr, int n);
