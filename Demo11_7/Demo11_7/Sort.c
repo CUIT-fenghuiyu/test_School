@@ -412,3 +412,73 @@ void MergeSort(int* arr,int n)
 	_MergeSort(arr, 0, n - 1, tmp);
 	free(tmp);
 }
+
+//归并排序非递归法
+void MergeSortNonR(int* arr, int n) {
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	int groupNum = 1;
+
+	while (groupNum < n) {
+		//按groupNum的值进行分组
+		for (int i = 0; i < n; i += groupNum * 2) {
+			int begin1 = i, end1 = i + groupNum - 1;
+			int begin2 = i + groupNum, end2 = i + groupNum * 2 - 1;
+			int index = begin1;
+
+			// 1、[begin2,end2] 不存在, 修正为一个不存在的区间
+			if (begin2 >= n)
+			{
+				begin2 = n + 1;
+				end2 = n;
+			}
+
+			// 2、end1越界,修正一下
+			if (end1 >= n)
+			{
+				end1 = n - 1;
+			}
+
+			// 3、end2越界，需要修正后归并
+			if (end2 >= n)
+			{
+				end2 = n - 1;
+			}
+
+			while (begin1 <= end1 && begin2 <= end2)
+			{
+				if (arr[begin1] < arr[begin2])
+				{
+					tmp[index++] = arr[begin1];
+					begin1++;
+				}
+
+				else
+				{
+					tmp[index++] = arr[begin2];
+					begin2++;
+				}
+			}
+
+			while (begin1 <= end1)
+			{
+				tmp[index++] = arr[begin1++];
+			}
+
+			while (begin2 <= end2)
+			{
+				tmp[index++] = arr[begin2++];
+			}
+
+		}
+		
+		for (int i = 0; i < n; i++)
+		{
+			arr[i] = tmp[i];
+		}
+
+		PrintArrary(tmp, n);
+		groupNum *= 2;
+
+	}
+	free(tmp);
+}
