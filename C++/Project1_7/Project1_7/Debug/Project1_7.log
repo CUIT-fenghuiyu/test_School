@@ -1,0 +1,3 @@
+﻿  test.cpp
+f:\project\c\github\test_school\c++\project1_7\project1_7\test.cpp(11): error C2374: “b”: 重定义；多次初始化
+  f:\project\c\github\test_school\c++\project1_7\project1_7\test.cpp(10): note: 参见“b”的声明
