@@ -8,19 +8,7 @@ public:
 	// 获取某年某月的天数
 	int GetMonthDay(int year, int month);
 	// 全缺省的构造函数
-	Date(int year=1990, int month=1, int day=1)
-	{
-		if (year > 0 && month > 0 && month < 13 && day >= 0 && day <= GetMonthDay(year, month))
-		{
-			_year = year;
-			_month = month;
-			_day = day;
-		}
-		else
-		{
-			cout << "非法日期" << endl;
-		}
-	}
+	Date(int year = 1990, int month = 1, int day = 1);
 	// 拷贝构造函数
 	// d2(d1)
 	Date(const Date& d);
